@@ -80,7 +80,7 @@ $database = new PDO(
                     </button>
                     <span class="ms-2 text-decoration-line-through"><?php echo $todo["label"]; ?></span>
                 <?php } ?>
-
+                </form>
             </div>
             <div>
             <form 
