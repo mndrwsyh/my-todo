@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 //connet to dtabase
 //1. databoace size
 $host = "127.0.0.1";
@@ -54,6 +56,17 @@ $database = new PDO(
     >
       <div class="card-body">
         <h3 class="card-title mb-3">My Todo List</h3>
+        <?php if ( isset( $_SESSION["user"] ) ) : ?>
+        <!--if user is logged in-->
+          <p>Hello, <?= $_SESSION["user"]["name"]; ?></p>
+        <?php else: ?>
+          <!-- If user is not logged in -->
+          <div>
+            <a href="login.php">Login</a>
+            <a href="signup.php">Sign Up</a>
+          </div>
+        <?php endif; ?>
+        <?php if ( isset( $_SESSION["user"] ) ) : ?>
         <ul class="list-group">
         <?php
         foreach ($todos as $index => $todo) { ?>
@@ -109,8 +122,15 @@ $database = new PDO(
             <button class="btn btn-primary btn-sm rounded ms-2">Add</button>
           </form>
         </div>
+        <?php endif; ?>
       </div>
     </div>
+
+    <?php if ( isset( $_SESSION["user"] ) ) : ?>
+          <div class="text-center">
+            <a href="logout.php">Logout</a>
+          </div>
+    <?php endif; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>

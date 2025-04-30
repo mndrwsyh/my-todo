@@ -18,10 +18,6 @@ $database = new PDO(
  // data from the input in index.php
  $todo_label = $_POST["todo_label"];
 
- //check if studentname is empty or not
-//  if (empty($student_name)) {
-//     echo "Please fill up the student name" ;
-//  } else {
      // 3. add the student name to students table
  // 3.1 SQL command (recipe)
  $sql = "INSERT INTO todos (`label`) VALUES (:label)";
