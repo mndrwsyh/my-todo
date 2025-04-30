@@ -1,7 +1,5 @@
 <?php 
 
-
-
 session_start();
 //connet to dtabase
 //1. databoace size
