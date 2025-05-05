@@ -1,20 +1,6 @@
 <?php 
 
-session_start();
-//connet to dtabase
-//1. databoace size
-$host = "127.0.0.1";
-$database_name = "TODO";
-$database_user = "root";
-$database_password = "";
-
-//2. coone tphp with the database
-//pdo - php database object
-$database = new PDO(
-    "mysql:host=$host;dbname=$database_name", 
-    $database_user, 
-    $database_password
-);
+$database = connectToDB();
 
 //3. get all the data from the login page
 $email = $_POST["email"];
@@ -47,7 +33,7 @@ if (
             $_SESSION["user"] = $user;
 
             //8. redirect user back to index php
-            header("Location:index.php");
+            header("Location:/");
             exit;
         } else {
             echo "The password provided is incorrect";

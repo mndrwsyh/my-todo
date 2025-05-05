@@ -1,137 +1,61 @@
 <?php
-
+//start the session
 session_start();
-//connet to dtabase
-//1. databoace size
-$host = "127.0.0.1";
-$database_name = "TODO";
-$database_user = "root";
-$database_password = "";
 
-//2. coone tphp with the database
-//pdo - php database object
-$database = new PDO(
-    "mysql:host=$host;dbname=$database_name", 
-    $database_user, 
-    $database_password
-);
-    
-// 3. get the students data from the database
-  // 3.1 - SQL command (recipe)
-  $sql = "SELECT * FROM todos";
-  // 3.2 - prepare sql query (prepare your material)
-  $query = $database->prepare( $sql );
-  // 3.3 - execute sql query (cook it)
-  $query->execute();
-  // 3.4 - fetch all the results from query (eat)
-  $todos = $query->fetchAll();
+require "includes/functions.php";
 
+/* 
+decide what page to load depending on the url the user visit
+localhost:9000/ -> home.php
+localhost:9000/login -> login.php
+localhost:9000/signup -> signup.php
+localhost:9000/logout -> logout.php
 
-?>
+action routes :
+localhost:900/auth/login -> includes/auth/do_login.php
+localhost:900/auth/signup -> includes/auth/signup.php
+localhost:900/task/add -> includes/task/add.php
+localhost:900/task/complete -> includes/task/compelted.php
+localhost:900/task/delete -> includes/task/del.php
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>TODO App</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-    />
-    <style type="text/css">
-      body {
-        background: #f1f1f1;
-      }
-    </style>
-  </head>
-  <body>
-    <div
-      class="card rounded shadow-sm"
-      style="max-width: 500px; margin: 60px auto;"
-    >
-      <div class="card-body">
-        <h3 class="card-title mb-3">My Todo List</h3>
-        <?php if ( isset( $_SESSION["user"] ) ) : ?>
-        <!--if user is logged in-->
-          <p>Hello, <?= $_SESSION["user"]["name"]; ?></p>
-        <?php else: ?>
-          <!-- If user is not logged in -->
-          <div>
-            <a href="login.php">Login</a>
-            <a href="signup.php">Sign Up</a>
-          </div>
-        <?php endif; ?>
-        <?php if ( isset( $_SESSION["user"] ) ) : ?>
-        <ul class="list-group">
-        <?php
-        foreach ($todos as $index => $todo) { ?>
-        
-          <li
-            class="list-group-item d-flex justify-content-between align-items-center"
-          >
-            <div>
-                <form 
-                method="POST"
-                action="completed_todo.php">
-                <input type="hidden" name="todo_completed" value="<?php echo $todo["completed"] ?>">
-                <input type="hidden" name="todo_id" value="<?php echo $todo["id"] ?>">
+*/
 
-                <?php if ($todo["completed"]==0) {?>
-                    <button class="btn btn-sm btn-white">
-                    <i class="bi bi-square"></i>
-                    </button>
-                    <span class="ms-2"><?php echo $todo["label"]; ?></span>
+//global variable = $_
+//figure out what path the user is visiting
+$path = $_SERVER["REQUEST_URI"];
 
-                <?php } else { ?>
-                    <button class="btn btn-sm btn-success">
-                    <i class="bi bi-check-square"></i>
-                    </button>
-                    <span class="ms-2 text-decoration-line-through"><?php echo $todo["label"]; ?></span>
-                <?php } ?>
-                </form>
-            </div>
-            <div>
-            <form 
-          method="POST" 
-          action="delete_todo.php">
-        <!--hidde input is to pass required data to the backend-->
-            <input type="hidden" name="todo_id" value="<?php echo $todo["id"]; ?>" />
-              <button class="btn btn-sm btn-danger">
-                <i class="bi bi-trash"></i>
-              </button>
-        </form>
-            </div>
-          </li>
-<?php } ?>
-        
-        </ul>
-        <div class="mt-4">
-          <form method="POST" action="add_todo.php" class="d-flex justify-content-between align-items-center">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Add new item..."
-              name="todo_label"
-              required
-            />
-            <button class="btn btn-primary btn-sm rounded ms-2">Add</button>
-          </form>
-        </div>
-        <?php endif; ?>
-      </div>
-    </div>
+//once u figure out the path, then need to load the relevant content based on the path
 
-    <?php if ( isset( $_SESSION["user"] ) ) : ?>
-          <div class="text-center">
-            <a href="logout.php">Logout</a>
-          </div>
-    <?php endif; ?>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+//fir switch, sequence?? doesnt matter, for else if semau tu matter
+switch ($path) {
+  //pages routes
+  case '/login':
+    require "pages/login.php";
+    break;
+  case '/signup':
+    require "pages/signup.php";
+    break;
+  case '/logout':
+    require "pages/logout.php";
+    break;
+    //action routes
+  case '/auth/login':
+    require "includes/auth/do_login.php";
+    break;
+  case '/auth/signup':
+    require "includes/auth/do_signup.php";
+    break;
+  case '/task/add':
+    require "includes/task/add_todo.php";
+    break;
+  case '/task/completed':
+    require "includes/task/completed_todo.php";
+    break;
+  case '/task/delete':
+    require "includes/task/delete_todo.php";
+    break;
+  
+  default:
+  require "pages/home.php";
+    break;
+}

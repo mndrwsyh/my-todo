@@ -30,6 +30,6 @@ $query = $database->prepare($sql);
 
 // -> only available in object, => only for array
 //4. redirect tje user back to index.php
-header("Location: index.php");
+header("Location: /");
 exit;
 ?>

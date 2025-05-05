@@ -29,7 +29,7 @@ $database = new PDO(
  ]);
 
  //4. redirect tje user back to index.php
- header("Location: index.php");
+ header("Location: /");
  exit;
  
 ?>

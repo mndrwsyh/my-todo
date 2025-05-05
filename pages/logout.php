@@ -8,5 +8,5 @@ session_start();
 unset( $_SESSION["user"]) ;
 
 //redirect back to index.php 
-header("Location:index.php");
+header("Location:/");
 exit;
